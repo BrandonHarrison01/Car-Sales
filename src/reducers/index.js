@@ -24,10 +24,18 @@ export const reducer = (state = initialState, action) => {
             console.log('ACTion', action.payload)
             return {
                 ...state,
-                car: { ...state.car, features: [...state.car.features, action.payload]}
+                car: { ...state.car, features: [...state.car.features, action.payload]},
+                store: state.store.filter(feature => action.payload.id !== feature.id),
+                additionalPrice: state.additionalPrice + action.payload.price
             };
         case REMOVE_ITEM:
             console.log('remove item', action.payload)
+            return {
+                ...state,
+                car: { ...state.car, features: state.car.features.filter(feature => action.payload.id !== feature.id)},
+                store: [ ...state.store, action.payload ],
+                additionalPrice: state.additionalPrice - action.payload.price
+            }
         default:
             return state;
     }
